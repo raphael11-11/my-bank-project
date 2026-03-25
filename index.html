@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Bank Login</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f2f4f7;
+    margin: 0;
+}
+
+/* LOGIN */
+.login {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-box {
+    background: white;
+    padding: 30px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #c40000;
+    color: white;
+    border: none;
+}
+
+/* DASHBOARD */
+.dashboard {
+    display: none;
+}
+
+.header {
+    background: #c40000;
+    color: gold;
+    padding: 15px;
+    text-align: center;
+}
+
+.balance {
+    background: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.amount {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    text-align: center;
+    padding: 15px;
+}
+
+.actions div {
+    padding: 10px;
+}
+
+.transactions {
+    background: white;
+    margin-top: 10px;
+}
+
+.tx {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+<div class="login" id="loginPage">
+    <div class="login-box">
+        <h2>Demo Bank</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="error" style="color:red;"></p>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+    <div class="header">DEMO BANK</div>
+
+    <div class="balance">
+        <h3>Welcome, <span id="user"></span></h3>
+        <p>Available Balance</p>
+        <div class="amount" id="balance">$2,500</div>
+    </div>
+
+    <div class="actions">
+        <div onclick="deposit()">💰 Deposit</div>
+        <div onclick="withdraw()">💸 Withdraw</div>
+        <div onclick="transfer()">🔁 Transfer</div>
+    </div>
+
+    <div class="transactions" id="transactions">
+        <div class="tx">Account created</div>
+    </div>
+
+</div>
+
+<script>
+let balance = 2500;
+
+// FAKE LOGIN (for now)
+function login() {
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if(user === "admin" && pass === "1234") {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("user").innerText = user;
+    } else {
+        document.getElementById("error").innerText = "Invalid login";
+    }
+}
+
+// ACTIONS
+function deposit() {
+    let amount = prompt("Enter amount to deposit:");
+    if(amount) {
+        balance += Number(amount);
+        updateBalance("Deposited $" + amount);
+    }
+}
+
+function withdraw() {
+    let amount = prompt("Enter amount to withdraw:");
+    if(amount && amount <= balance) {
+        balance -= Number(amount);
+        updateBalance("Withdrew $" + amount);
+    }
+}
+
+function transfer() {
+    let amount = prompt("Enter amount to transfer:");
+    if(amount && amount <= balance) {
+        balance -= Number(amount);
+        updateBalance("Transferred $" + amount);
+    }
+}
+
+function updateBalance(message) {
+    document.getElementById("balance").innerText = "$" + balance;
+    let tx = document.createElement("div");
+    tx.className = "tx";
+    tx.innerText = message;
+    document.getElementById("transactions").prepend(tx);
+}
+</script>
+
+</body>
+</html>
